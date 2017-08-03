@@ -1,0 +1,22 @@
+management:
+  security:
+    enabled: false
+
+endpoints:
+  sensitive: false
+  enabled: false
+  info:
+    enabled: true
+  health:
+    enabled: true
+
+spring:
+  social:
+    auto_connection_views: true
+    twitter:
+      appId: tmThc03uOs8UgiW7zIlY42Px5
+      appSecret: bDK2Ocgzd8mkOQwOGtdLeGYpOp9UPKHNocq2CYeuslo0Fm2FlJ
+  data:
+    elasticsearch:
+      cluster-nodes: localhost:9300,localhost:9301
+      cluster-name: twitter-mine
