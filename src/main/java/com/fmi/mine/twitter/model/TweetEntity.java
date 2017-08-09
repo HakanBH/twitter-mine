@@ -4,10 +4,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.social.twitter.api.Entities;
 import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.TwitterProfile;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Document(indexName = TweetEntity.INDEX_NAME, type = "tweet", shards = 2)
 public class TweetEntity {
 
@@ -46,6 +53,8 @@ public class TweetEntity {
     private Boolean favorited;
     @Field(type = FieldType.Integer)
     private Integer favoriteCount;
+    @Field(type = FieldType.Nested)
+    private TwitterProfile user;
 
     public TweetEntity(Tweet tweet) {
         this.id = tweet.getId();
@@ -64,129 +73,6 @@ public class TweetEntity {
         this.retweetCount = tweet.getRetweetCount();
         this.favorited = tweet.isFavorited();
         this.favoriteCount = tweet.getFavoriteCount();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getFromUser() {
-        return fromUser;
-    }
-
-    public void setFromUser(String fromUser) {
-        this.fromUser = fromUser;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public Long getToUserId() {
-        return toUserId;
-    }
-
-    public void setToUserId(Long toUserId) {
-        this.toUserId = toUserId;
-    }
-
-    public Long getInReplyToStatusId() {
-        return inReplyToStatusId;
-    }
-
-    public void setInReplyToStatusId(Long inReplyToStatusId) {
-        this.inReplyToStatusId = inReplyToStatusId;
-    }
-
-    public Long getInReplyToUserId() {
-        return inReplyToUserId;
-    }
-
-    public void setInReplyToUserId(Long inReplyToUserId) {
-        this.inReplyToUserId = inReplyToUserId;
-    }
-
-    public String getInReplyToScreenName() {
-        return inReplyToScreenName;
-    }
-
-    public void setInReplyToScreenName(String inReplyToScreenName) {
-        this.inReplyToScreenName = inReplyToScreenName;
-    }
-
-    public Long getFromUserId() {
-        return fromUserId;
-    }
-
-    public void setFromUserId(Long fromUserId) {
-        this.fromUserId = fromUserId;
-    }
-
-    public String getLanguageCode() {
-        return languageCode;
-    }
-
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public Boolean getRetweeted() {
-        return retweeted;
-    }
-
-    public void setRetweeted(Boolean retweeted) {
-        this.retweeted = retweeted;
-    }
-
-    public Integer getRetweetCount() {
-        return retweetCount;
-    }
-
-    public void setRetweetCount(Integer retweetCount) {
-        this.retweetCount = retweetCount;
-    }
-
-    public Boolean getFavorited() {
-        return favorited;
-    }
-
-    public void setFavorited(Boolean favorited) {
-        this.favorited = favorited;
-    }
-
-    public Integer getFavoriteCount() {
-        return favoriteCount;
-    }
-
-    public void setFavoriteCount(Integer favoriteCount) {
-        this.favoriteCount = favoriteCount;
+        this.user = tweet.getUser();
     }
 }

@@ -18,7 +18,7 @@ public class TwitterStreamListener implements StreamListener {
 
     @Override
     public void onTweet(Tweet tweet) {
-        LOGGER.debug("Tweet received: " + tweet.getId());
+        LOGGER.info("Tweet received: " + tweet.getId());
         tweetEntityService.save(tweet);
     }
 
