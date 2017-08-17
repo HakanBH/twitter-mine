@@ -1,0 +1,29 @@
+Configuration:
+  status: warn
+  Appenders:
+    RollingFile:
+      name: RollingFile
+      #choose location where to save log - all folders must be created
+      fileName: /var/log/twitter-mine/twitter-mine.log
+      #choose pattern here
+      filePattern: /var/log/twitter-mine/twitter-mine-%d{yy-MM-dd}.log
+      Policies:
+      #Size based trigger
+        TimeBasedTriggeringPolicy:
+          interval: 1
+      PatternLayout:
+              Pattern: "%d{HH:mm:ss.SSS}\ [%t] %-5level %logger{36} - %msg%n"
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss.SSS}\ [%t] %-5level %logger{36} - %msg%n"
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: RollingFile
+    Logger:
+      level: info
+      name: "com.fmi.twitter.importer"
