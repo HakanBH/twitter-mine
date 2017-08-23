@@ -12,14 +12,14 @@ Set the JAVA_HOME environment variable to the root directory of your Java instal
 
 ```
 cluster.name: twitter-mine
-node.master: false
+node.master: true
 node.data: true
-transport.tcp.port: 9301
-http.port : 9201
+transport.tcp.port: 9300
+http.port : 9200
 discovery.zen.ping.unicast.hosts: ["localhost:9300", "localhost:9301"]
 discovery.zen.minimum_master_nodes: 1
 gateway.recover_after_time: 20s
-index.unassigned.node_left.delayed_timeout: 20s
+index.unassigned.node_left.delayed_timeout: 20
 ```
 
 1. Execute {elasticsearch-root}/bin/elasticsearch.bat 
