@@ -47,8 +47,8 @@ public class TweetController {
                 .filter(status -> status.getLang().equalsIgnoreCase(lang))
                 .map(status -> new Tweet(status));
 
-        analyticsService.sentimentAnalysis(tweetJavaDStream);
-//        analyticsService.trendingHashtags(tweetJavaDStream);
+//        analyticsService.sentimentAnalysis(tweetJavaDStream);
+        analyticsService.trendingHashtags(tweetJavaDStream);
         tweetService.saveToElasticsearch(tweetJavaDStream);
 
         jssc.start();

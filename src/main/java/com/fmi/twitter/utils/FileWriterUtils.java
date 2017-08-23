@@ -4,10 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
+import java.util.List;
 
 public class FileWriterUtils {
-
     public static void appendFile(String string, String filename) {
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -20,8 +19,6 @@ public class FileWriterUtils {
             // true = append file
             fw = new FileWriter(file.getAbsoluteFile(), true);
             bw = new BufferedWriter(fw);
-            bw.write(String.valueOf(new Date()));
-            bw.newLine();
             bw.write(string);
             bw.newLine();
         } catch (IOException e) {
@@ -35,6 +32,12 @@ public class FileWriterUtils {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public static void appendFile(List<?> list, String filename) {
+        for (Object o : list) {
+            appendFile(String.valueOf(o), filename);
         }
     }
 }
