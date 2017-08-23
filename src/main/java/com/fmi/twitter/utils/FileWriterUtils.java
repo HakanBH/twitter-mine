@@ -8,11 +8,11 @@ import java.util.Date;
 
 public class FileWriterUtils {
 
-    public static void appendFile(String string) {
+    public static void appendFile(String string, String filename) {
         BufferedWriter bw = null;
         FileWriter fw = null;
         try {
-            File file = new File("trendingHashtags.txt");
+            File file = new File(filename);
             // if file doesnt exists, then create it
             if (!file.exists()) {
                 file.createNewFile();

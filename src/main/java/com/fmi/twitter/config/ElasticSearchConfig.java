@@ -1,6 +1,5 @@
 package com.fmi.twitter.config;
 
-import lombok.Getter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.elasticsearch.client.Client;
@@ -17,7 +16,6 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 @Configuration
-@Getter
 public class ElasticSearchConfig {
 
     @Value("${spring.data.elasticsearch.cluster-nodes}")
@@ -72,4 +70,6 @@ public class ElasticSearchConfig {
     public ElasticsearchTemplate elasticsearchTemplate(Client client) {
         return new ElasticsearchTemplate(client);
     }
+
+
 }

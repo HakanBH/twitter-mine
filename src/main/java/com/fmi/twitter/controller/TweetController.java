@@ -18,48 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 import scala.Tuple2;
 import twitter4j.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController("/")
 public class TweetController {
 
-    @Autowired
-    private Twitter twitter;
-
-    @Autowired
     private JavaStreamingContext jssc;
-
-    @Autowired
+    private Twitter twitter;
     private TweetService tweetService;
+    private AnalyticsService analyticsService;
 
     @Autowired
-    private AnalyticsService analyticsService;
+    public TweetController(JavaStreamingContext jssc, Twitter twitter, TweetService tweetService, AnalyticsService analyticsService) {
+        this.jssc = jssc;
+        this.twitter = twitter;
+        this.tweetService = tweetService;
+        this.analyticsService = analyticsService;
+    }
 
     @GetMapping("/stream")
     public void stream(@RequestParam("lang") String lang)
             throws InterruptedException {
         JavaReceiverInputDStream<Status> stream = TwitterUtils.createStream(jssc);
 
-//        JavaDStream<Tweet> tweetJavaDStream = stream
-//                .filter(status -> status.getLang().equalsIgnoreCase(lang))
-//                .map(status -> new Tweet(status));
-//
-//        analyticsService.trendingHashtags(tweetJavaDStream);
-//        tweetService.saveToElasticsearch(tweetJavaDStream);
-
-        JavaDStream<String> tweets = stream
+        JavaDStream<Tweet> tweetJavaDStream = stream
                 .filter(status -> status.getLang().equalsIgnoreCase(lang))
-                .map(status -> status.getText())
-                .map(tweetText -> SentimentUtils.sanitizeTweet(tweetText));
+                .map(status -> new Tweet(status));
 
-        JavaPairDStream<String, Double> tweetWithScoreDStream =
-                tweets.mapToPair(tweetText -> new Tuple2<>(tweetText, Double.valueOf(SentimentUtils.calculateWeightedSentimentScore(tweetText))));
-
-        tweetWithScoreDStream.foreachRDD(rdd -> {
-            FileWriterUtils.appendFile(rdd.toDebugString());
-            return null;
-        });
+        analyticsService.sentimentAnalysis(tweetJavaDStream);
+//        analyticsService.trendingHashtags(tweetJavaDStream);
+        tweetService.saveToElasticsearch(tweetJavaDStream);
 
         jssc.start();
         jssc.awaitTermination();

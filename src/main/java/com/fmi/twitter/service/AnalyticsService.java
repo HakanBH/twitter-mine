@@ -1,6 +1,8 @@
 package com.fmi.twitter.service;
 
 import com.fmi.twitter.model.Tweet;
+import com.fmi.twitter.utils.FileWriterUtils;
+import com.fmi.twitter.utils.SentimentUtils;
 import org.apache.spark.streaming.Durations;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
@@ -14,6 +16,23 @@ import static com.fmi.twitter.utils.FileWriterUtils.appendFile;
 
 @Service
 public class AnalyticsService {
+
+    public final static String SENTIMENT_ANALYSIS_OUTPUT_FILE = "sentimentAnalysis.txt";
+    public final static String TRENDING_HASHTAGS_OUTPUT_FILE = "trendingHashtags.txt";
+
+    public void sentimentAnalysis(JavaDStream<Tweet> stream) {
+        JavaDStream<String> tweets = stream
+                .map(status -> status.getText())
+                .map(tweetText -> SentimentUtils.sanitizeTweet(tweetText));
+
+        JavaPairDStream<String, Double> tweetWithScoreDStream =
+                tweets.mapToPair(tweetText -> new Tuple2<>(tweetText, Double.valueOf(SentimentUtils.calculateWeightedSentimentScore(tweetText))));
+
+        tweetWithScoreDStream.foreachRDD(rdd -> {
+            FileWriterUtils.appendFile(Arrays.toString(rdd.collect().toArray()), SENTIMENT_ANALYSIS_OUTPUT_FILE);
+            return null;
+        });
+    }
 
     public void trendingHashtags(JavaDStream<Tweet> stream) {
         JavaDStream<String> hashTagRDD = stream
@@ -30,7 +49,7 @@ public class AnalyticsService {
         topicCounts60RDD.foreachRDD(pairRDD -> {
             List<Tuple2<Integer, String>> top10Topics = pairRDD.take(10); // get Top 10.
             top10Topics.forEach(tuple -> System.err.println(String.format("%s, (%d tweets)", tuple._2(), tuple._1())));
-            appendFile(String.valueOf(top10Topics));
+            appendFile(String.valueOf(top10Topics), TRENDING_HASHTAGS_OUTPUT_FILE);
             return null;
         });
     }

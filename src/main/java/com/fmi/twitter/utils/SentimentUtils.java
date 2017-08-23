@@ -58,8 +58,6 @@ public class SentimentUtils {
         double weightedSentiment = sentiments.isEmpty() ? -1 : getProduct(sentiments, sizes) / sizes.stream().mapToInt(Integer::intValue).sum();
         mainSentiment = sentiments.isEmpty() ? -1 : mainSentiment;
 
-//        System.out.println("debug: sentences size: " + sentences.size() + "main " + mainSentiment + " avg " + avgSentiment + " weighted " + weightedSentiment);
-
         return normalizeCoreNLPSentiment(weightedSentiment);
     }
 
@@ -128,10 +126,5 @@ public class SentimentUtils {
                         .replaceAll("(?:https?|http?)://[\\w/%.-]+\\s+", "")
                         .replaceAll("(?:https?|http?)//[\\w/%.-]+\\s+", "")
                         .replaceAll("(?:https?|http?)//[\\w/%.-]+", "");
-
-//        return cleanedTweets.stream()
-//                .filter(s -> s.matches("^[a-zA-Z]+$"))
-//                .filter(s -> !stopWords.contains(s))
-//                .collect(Collectors.toList());
     }
 }
