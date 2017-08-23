@@ -8,6 +8,5 @@ public class MiningApplication {
 
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(MiningApplication.class, args);
-        Thread.sleep(10000);
     }
 }

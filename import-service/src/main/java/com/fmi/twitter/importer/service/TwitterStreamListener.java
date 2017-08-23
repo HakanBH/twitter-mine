@@ -24,7 +24,7 @@ public class TwitterStreamListener implements StreamListener {
 
     @Override
     public void onDelete(StreamDeleteEvent streamDeleteEvent) {
-        LOGGER.info("Tweet deleted: " + streamDeleteEvent.getTweetId());
+        LOGGER.info("Delete event for tweet: " + streamDeleteEvent.getTweetId());
     }
 
     @Override
