@@ -26,4 +26,4 @@ Configuration:
         - ref: RollingFile
     Logger:
       level: info
-      name: "com.fmi.twitter.importer"
+      name: "com.fmi.twitter"

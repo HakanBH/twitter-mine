@@ -1,9 +1,23 @@
-management:
-  security:
-    enabled: false
 
 server:
   port: 8080
+
+spring:
+  data:
+    elasticsearch:
+      cluster-nodes: localhost:9300,localhost:9301
+      cluster-name: twitter-mine
+
+twitter:
+  consumerKey: tmThc03uOs8UgiW7zIlY42Px5
+  consumerSecret: bDK2Ocgzd8mkOQwOGtdLeGYpOp9UPKHNocq2CYeuslo0Fm2FlJ
+  accessToken: 711130377306382336-CONnlQm6Ya6OBqEWETZ1t59VVfm4oNo
+  accessTokenSecret: vGr4SRet27ezSAkIZOCR8xxkBylenKOp4SIBBXzncS04k
+
+apache:
+  spark:
+    master: local[*]
+    appname: twitter-mine
 
 endpoints:
   sensitive: false
@@ -13,13 +27,6 @@ endpoints:
   health:
     enabled: true
 
-spring:
-  social:
-    auto_connection_views: true
-    twitter:
-      appId: tmThc03uOs8UgiW7zIlY42Px5
-      appSecret: bDK2Ocgzd8mkOQwOGtdLeGYpOp9UPKHNocq2CYeuslo0Fm2FlJ
-  data:
-    elasticsearch:
-      cluster-nodes: localhost:9300,localhost:9301
-      cluster-name: twitter-mine
+management:
+  security:
+    enabled: false

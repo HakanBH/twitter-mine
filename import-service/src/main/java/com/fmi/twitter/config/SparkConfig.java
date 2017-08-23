@@ -1,7 +1,6 @@
-package com.fmi.twitter.mining.config;
+package com.fmi.twitter.config;
 
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.springframework.beans.factory.annotation.Value;
