@@ -21,11 +21,4 @@ public class TweetService {
     public Iterable<Tweet> save(List<Tweet> tweets) {
         return tweetEntityRepository.save(tweets);
     }
-
-    public void saveToElasticsearch(JavaDStream<Tweet> stream) {
-        stream.foreachRDD(tweetJavaRDD -> {
-            save(tweetJavaRDD.collect());
-            return null;
-        });
-    }
 }

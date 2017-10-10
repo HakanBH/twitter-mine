@@ -41,7 +41,7 @@ public class Tweet implements Serializable {
     @Field(type = FieldType.Integer)
     private Integer favoriteCount;
     @Field(type = FieldType.Nested)
-    private User user;
+    private TwitterUser user;
 
     public Tweet(Status status) {
         this.id = status.getId();
@@ -56,7 +56,8 @@ public class Tweet implements Serializable {
         this.retweetCount = status.getRetweetCount();
         this.favorited = status.isFavorited();
         this.favoriteCount = status.getFavoriteCount();
-        this.user = status.getUser();
+
+        this.user = new TwitterUser(status.getUser());
     }
 
     public Long getId() {
@@ -155,11 +156,7 @@ public class Tweet implements Serializable {
         this.favoriteCount = favoriteCount;
     }
 
-    public User getUser() {
+    public TwitterUser getUser() {
         return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

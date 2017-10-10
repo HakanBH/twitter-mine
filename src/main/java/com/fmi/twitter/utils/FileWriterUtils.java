@@ -14,6 +14,7 @@ public class FileWriterUtils {
             File file = new File(filename);
             // if file doesnt exists, then create it
             if (!file.exists()) {
+                file.getParentFile().mkdirs();
                 file.createNewFile();
             }
             // true = append file

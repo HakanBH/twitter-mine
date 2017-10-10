@@ -8,12 +8,6 @@ spring:
       cluster-nodes: localhost:9300,localhost:9301
       cluster-name: twitter-mine
 
-twitter:
-  consumerKey: tmThc03uOs8UgiW7zIlY42Px5
-  consumerSecret: bDK2Ocgzd8mkOQwOGtdLeGYpOp9UPKHNocq2CYeuslo0Fm2FlJ
-  accessToken: 711130377306382336-CONnlQm6Ya6OBqEWETZ1t59VVfm4oNo
-  accessTokenSecret: vGr4SRet27ezSAkIZOCR8xxkBylenKOp4SIBBXzncS04k
-
 apache:
   spark:
     master: local[*]

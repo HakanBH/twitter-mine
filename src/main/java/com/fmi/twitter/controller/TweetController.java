@@ -3,10 +3,7 @@ package com.fmi.twitter.controller;
 import com.fmi.twitter.model.Tweet;
 import com.fmi.twitter.service.AnalyticsService;
 import com.fmi.twitter.service.TweetService;
-import com.fmi.twitter.utils.FileWriterUtils;
-import com.fmi.twitter.utils.SentimentUtils;
 import org.apache.spark.streaming.api.java.JavaDStream;
-import org.apache.spark.streaming.api.java.JavaPairDStream;
 import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
@@ -15,10 +12,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import scala.Tuple2;
 import twitter4j.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,9 +42,17 @@ public class TweetController {
                 .filter(status -> status.getLang().equalsIgnoreCase(lang))
                 .map(status -> new Tweet(status));
 
-//        analyticsService.sentimentAnalysis(tweetJavaDStream);
+        analyticsService.sentimentAnalysis(tweetJavaDStream);
         analyticsService.trendingHashtags(tweetJavaDStream);
-        tweetService.saveToElasticsearch(tweetJavaDStream);
+
+        tweetJavaDStream.foreachRDD(tweetJavaRDD -> {
+            List<Tweet> tweets = tweetJavaRDD.collect();
+            if(!tweets.isEmpty()){
+                tweetService.save(tweets);
+            }
+            return null;
+        });
+
 
         jssc.start();
         jssc.awaitTermination();

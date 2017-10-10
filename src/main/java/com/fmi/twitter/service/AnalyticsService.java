@@ -17,8 +17,8 @@ import static com.fmi.twitter.utils.FileWriterUtils.appendFile;
 @Service
 public class AnalyticsService {
 
-    public final static String SENTIMENT_ANALYSIS_OUTPUT_FILE = "sentimentAnalysis.txt";
-    public final static String TRENDING_HASHTAGS_OUTPUT_FILE = "trendingHashtags.txt";
+    public final static String SENTIMENT_ANALYSIS_OUTPUT_FILE = "out/sentimentAnalysis.txt";
+    public final static String TRENDING_HASHTAGS_OUTPUT_FILE = "out/trendingHashtags.txt";
 
     public void sentimentAnalysis(JavaDStream<Tweet> stream) {
         JavaDStream<String> tweets = stream
